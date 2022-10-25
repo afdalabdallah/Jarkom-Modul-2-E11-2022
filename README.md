@@ -110,6 +110,7 @@ apt-get update
 apt-get install bind9 -y
 ```
 #### Pembuatan Domain
+##### konfigurasi pada WISE
 > Lakukan kode berikut pada `WISE`, membuka file `nano /etc/bind/named.conf.local` dan mengubahnya menjadi kode berikut
 ```
 zone "wise.e11.com" {
@@ -118,20 +119,117 @@ zone "wise.e11.com" {
 };
 ```
 
+> membuat folder `/etc/bind/wise` dan mengcopy
+```
+mkdir /etc/bind/wise
+cp /etc/bind/db.local /etc/bind/wise/wise.e11.com
+```
+
+> mengedit file `nano /etc/bind/wise/wise.e11.com`
+
+![messageImage_1666685362495](https://user-images.githubusercontent.com/103357229/197719660-397e34a4-3eb0-46a2-87ca-f440164d5a74.jpg)
+
+> restart bind
+```
+service bind9 restart
+```
+
+> merubah `nano /etc/bind/named.conf.local`
+
+![messageImage_1666685776569](https://user-images.githubusercontent.com/103357229/197720911-f285e6f1-968a-4411-998d-403229ea10d5.jpg)
+
+##### Konfigurasi pada Berlint
+```
+apt-get update
+apt-get install bind9 -y
+```
+
+> mengedit file `/etc/bind/named.conf.local`
+
+![messageImage_1666686296184](https://user-images.githubusercontent.com/103357229/197722867-90462499-2453-457e-ae1a-2db13bb128ec.jpg)
+
+```
+service bind9 restart
+```
+#### Testing
+> `nano /etc/resolv.conf` pada SSS
+```
+nameserver 10.27.3.2
+nameserver 10.27.2.2
+```
+
+![messageImage_1666686508595](https://user-images.githubusercontent.com/103357229/197723807-fec87009-ada0-4465-a0b4-4f0f7c97e3e0.jpg)
+
 ### NOMOR 2
 > Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise (2).
+
+#### pada WISE
+![messageImage_1666686673669](https://user-images.githubusercontent.com/103357229/197724294-43c9b9b8-cf59-4a9d-9ac4-b541d80643c7.jpg)
+
+#### testing 
+![messageImage_1666686788246](https://user-images.githubusercontent.com/103357229/197724732-93270225-47b6-4639-8ff3-8a2fe22b131b.jpg)
 
 ### NOMOR 3
 > Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden (3).
 
+#### Konfigurasi WISE SUB DOMAIN
+![messageImage_1666687200780](https://user-images.githubusercontent.com/103357229/197726364-2ce52767-b07e-41b2-a36b-399000b1df52.jpg)
+
+![messageImage_1666687289381](https://user-images.githubusercontent.com/103357229/197726824-2d8e10fd-998f-43c0-a46e-711819d50b1a.jpg)
+
+#### Konfigurasi WISE CNAME
+![messageImage_1666687852004](https://user-images.githubusercontent.com/103357229/197728970-b42f5f98-7928-43de-966b-4f7dc88fb3a3.jpg)
+
+![messageImage_1666687857673](https://user-images.githubusercontent.com/103357229/197729028-496dbc96-ff1c-4b79-a641-a7363cab2a16.jpg)
+
 ### NOMOR 4
 > Buat juga reverse domain untuk domain utama (4).
+
+```
+cp /etc/bind/db.local /etc/bind/wise/3.27.10.in-addr.arpa
+```
+
+![messageImage_1666688213843](https://user-images.githubusercontent.com/103357229/197730446-be8b4e07-269a-453d-b586-933e04a6bd10.jpg)
+
+#### SSS
+```
+nano /etc/resolv.conf
+```
+tambahkan `nameserver 192.168.122.1`
+```
+apt-get update
+apt-get install dnsutils
+```
+
+> menghapus `nameserver 192.168.122.1`
+
+#### testing
+```
+host -t PTR 10.27.3.2
+```
+
+![messageImage_1666688680590](https://user-images.githubusercontent.com/103357229/197732227-4f58d62e-a032-42a5-83b8-6bad2270d9d7.jpg)
 
 ### NOMOR 5
 > Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama (5).
 
+> telah dijalankan pada nomor 1
+
 ### NOMOR 6
 > Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation (6).
+
+> Subdomain
+![messageImage_1666689417603](https://user-images.githubusercontent.com/103357229/197735103-7f544844-202f-41b1-b57d-c0c0595272aa.jpg)
+
+> CNAME
+![messageImage_1666689510230](https://user-images.githubusercontent.com/103357229/197735421-b4ca49fc-cffa-48d5-808e-cab43f528436.jpg)
+
+![messageImage_1666689515387](https://user-images.githubusercontent.com/103357229/197735458-e35e7356-7203-4db8-b7a2-22975be90d0d.jpg)
+
+> BERLINT
+![messageImage_1666690457633](https://user-images.githubusercontent.com/103357229/197738870-4433d5c1-3405-45aa-9f4c-0c364a9f79b5.jpg)
+
+
 
 ### NOMOR 7
 > Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden (7).
