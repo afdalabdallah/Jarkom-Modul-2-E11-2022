@@ -26,7 +26,7 @@
 
 <img width="939" alt="image" src="https://user-images.githubusercontent.com/103357229/197660362-c69594bb-c35b-4b3e-a71d-5d79e93618ca.png">
 
-> Melakukan konfigurasi pada router `Ostania`
+### Melakukan konfigurasi pada router `Ostania`
 ```
 auto eth0
 iface eth0 inet dhcp
@@ -47,7 +47,7 @@ iface eth3 inet static
 	netmask 255.255.255.0
 ```
 
-> Melakukan konfigurasi pada node-node lain
+### Melakukan konfigurasi pada node-node lain
 1. Node SSS
 ```
 auto eth0
