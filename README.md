@@ -223,12 +223,26 @@ host -t PTR 10.27.3.2
 
 > CNAME
 ![messageImage_1666689510230](https://user-images.githubusercontent.com/103357229/197735421-b4ca49fc-cffa-48d5-808e-cab43f528436.jpg)
-
+```
+nameserver 10.27.3.2
+nameserver 10.27.2.2
+```
 ![messageImage_1666689515387](https://user-images.githubusercontent.com/103357229/197735458-e35e7356-7203-4db8-b7a2-22975be90d0d.jpg)
 
 > BERLINT
 ![messageImage_1666690457633](https://user-images.githubusercontent.com/103357229/197738870-4433d5c1-3405-45aa-9f4c-0c364a9f79b5.jpg)
+![messageImage_1666697899895](https://user-images.githubusercontent.com/103357229/197764792-9c91e2fd-2206-47c0-b36b-199a43c96c9f.jpg)
+![messageImage_1666697861899](https://user-images.githubusercontent.com/103357229/197764799-5a28f084-c3c7-4084-8fea-ae4d4de3fe71.jpg)
+![messageImage_1666697843155](https://user-images.githubusercontent.com/103357229/197764806-6e253dc1-6415-40d5-b335-9c21d23cf20e.jpg)
 
+> WISE
+![messageImage_1666697716806](https://user-images.githubusercontent.com/103357229/197765000-a1fb0c79-b6af-44ca-866a-1c4cc2c8550e.jpg)
+![messageImage_1666697799957](https://user-images.githubusercontent.com/103357229/197765011-6dee52ef-b4fb-4c8f-90ce-60b2ab7267f7.jpg)
+![messageImage_1666697741886](https://user-images.githubusercontent.com/103357229/197765026-6d4f496b-6714-443f-8245-9ac635311aef.jpg)
+
+> Testing
+![messageImage_1666697928574](https://user-images.githubusercontent.com/103357229/197765177-22205f18-3128-4ef7-9f4d-663af180ac4c.jpg)
+![messageImage_1666697953890](https://user-images.githubusercontent.com/103357229/197765185-45fcb33b-ac82-450a-bb86-d36d7c0b575b.jpg)
 
 
 ### NOMOR 7
