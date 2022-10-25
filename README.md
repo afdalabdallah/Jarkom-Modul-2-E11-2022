@@ -248,6 +248,18 @@ nameserver 10.27.2.2
 ### NOMOR 7
 > Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden (7).
 
+> WISE
+![messageImage_1666699267748](https://user-images.githubusercontent.com/90848018/197792927-d5437e19-1e68-4ad0-817e-978c40cd2f41.jpg)
+![messageImage_1666699063039](https://user-images.githubusercontent.com/90848018/197792993-e5ccf5a2-5dd3-48fd-b3d7-44ea805cfafd.jpg)
+
+> Berlint
+![messageImage_1666699073402](https://user-images.githubusercontent.com/90848018/197793235-c8e6cb12-e662-4841-a58c-79bc8e2c698f.jpg)
+![messageImage_1666698430051](https://user-images.githubusercontent.com/90848018/197793273-9da2568c-2d43-4cd6-92f1-04acf159b1ec.jpg)
+
+> SSS
+![messageImage_1666699085266](https://user-images.githubusercontent.com/90848018/197793381-08aa01e5-54f7-405b-9c1c-035361f57eac.jpg)
+
+
 ### NOMOR 8
 > Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
 
