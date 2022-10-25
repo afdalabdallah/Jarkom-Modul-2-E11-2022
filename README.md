@@ -89,9 +89,34 @@ iface eth0 inet static
 	gateway 10.27.2.1
 ```
 
+#### Melakukan IPtables pada router
+```
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.27.0.0/16
+cat /etc/resolv.conf
+```
+> Didapatkan IP `192.168.122.1`, lakukan perubahan pada `/etc/resolv.conf` di setiap node-node dengan kode berikut:
+```
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+> Setelah melakukan step di atas, maka setiap node sudah dapat dilakukan ping ke google `ping google.com -c 5`
+
 ## SOAL PRAKTIKUM
 ### NOMOR 1
 > WISE akan dijadikan sebagai DNS Master, Berlint akan dijadikan DNS Slave, dan Eden akan digunakan sebagai Web Server. Terdapat 2 Client yaitu SSS, dan Garden. Semua node terhubung pada router Ostania, sehingga dapat mengakses internet (1).
+#### Instalansi bind
+> Lakukan kode berikut pada `WISE`
+```
+apt-get update
+apt-get install bind9 -y
+```
+#### Pembuatan Domain
+> Lakukan kode berikut pada `WISE`, membuka file `nano /etc/bind/named.conf.local` dan mengubahnya menjadi kode berikut
+```
+zone "wise.e11.com" {
+	type master;
+	file "/etc/bind/wise/wise.e11.com";
+};
+```
 
 ### NOMOR 2
 > Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise (2).
