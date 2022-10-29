@@ -160,105 +160,348 @@ nameserver 10.27.2.2
 
 ![messageImage_1666686508595](https://user-images.githubusercontent.com/103357229/197723807-fec87009-ada0-4465-a0b4-4f0f7c97e3e0.jpg)
 
+#### Tangkapan Layar hasil ping
+![image](https://user-images.githubusercontent.com/90978855/198832990-ffaed1f5-e227-4a9a-925c-d138a0974a86.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198832994-b6df6c19-988b-48aa-afad-52c75099613c.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198832997-d5ac0a1d-b6a2-426a-b740-6c6267123cb5.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198833001-e2096974-c833-4983-96d4-53f032fac520.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198833008-db596255-744a-41c6-bcfa-e3c6c44d8865.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198833013-3c18dd55-6931-46d4-8ae0-691b144ecaef.png)
+
 ### NOMOR 2
 > Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise (2).
 
 #### pada WISE
+> Mengedit file wise.e11.com dengan membuat domain dan alias (CNAME) 
+
+```
+echo "
+\$TTL    604800
+@       IN      SOA     wise.e11.com. root.wise.e11.com. (
+                        2022102501       ; Serial
+                        604800          ; Refresh
+                        86400           ; Retry
+                        2419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@               IN      NS      wise.e11.com.
+@               IN      A       10.27.3.2 ; IP WISE
+www             IN      CNAME   wise.e11.com.
+@               IN      AAAA    ::1
+" > /etc/bind/wise/wise.e11.com
+service bind9 restart
+```
+
 ![messageImage_1666686673669](https://user-images.githubusercontent.com/103357229/197724294-43c9b9b8-cf59-4a9d-9ac4-b541d80643c7.jpg)
 
 #### testing 
+> Merubah nameserver pada SSS dan Garden dengan IP "10.27.3.2"
+
+```
+echo 'nameserver 10.27.3.2' > /etc/resolv.conf
+```
+
+> Hasil Ping 
+
 ![messageImage_1666686788246](https://user-images.githubusercontent.com/103357229/197724732-93270225-47b6-4639-8ff3-8a2fe22b131b.jpg)
 
 ### NOMOR 3
 > Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden (3).
 
 #### Konfigurasi WISE SUB DOMAIN
-![messageImage_1666687200780](https://user-images.githubusercontent.com/103357229/197726364-2ce52767-b07e-41b2-a36b-399000b1df52.jpg)
+> Menambahkan konfigurasi pada WISE dengan menambahkan subdomain eden dan CNAME-nya
 
-![messageImage_1666687289381](https://user-images.githubusercontent.com/103357229/197726824-2d8e10fd-998f-43c0-a46e-711819d50b1a.jpg)
+```
+eden            IN      A       10.27.2.3 ; IP Eden
+www.eden        IN      CNAME   eden.wise.e11.com.
+```
 
-#### Konfigurasi WISE CNAME
-![messageImage_1666687852004](https://user-images.githubusercontent.com/103357229/197728970-b42f5f98-7928-43de-966b-4f7dc88fb3a3.jpg)
+#### Testing
+> Lakukan restart bind9 pada WISE
 
-![messageImage_1666687857673](https://user-images.githubusercontent.com/103357229/197729028-496dbc96-ff1c-4b79-a641-a7363cab2a16.jpg)
+```
+service bind9 restart
+```
+
+> PING eden dan www.eden pada client
+
+![image](https://user-images.githubusercontent.com/90978855/198833412-41936e7d-d171-40e4-a1dd-875d7e066844.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198833417-ce4fbc74-d981-4145-b862-8bcf9065527f.png)
+
 
 ### NOMOR 4
 > Buat juga reverse domain untuk domain utama (4).
 
+#### Konfigurasi pada WISE
+
+> Mengedit file `/etc/bind/wise/3.27.10.in-addr.arpa`
+
 ```
 cp /etc/bind/db.local /etc/bind/wise/3.27.10.in-addr.arpa
+echo "
+\$TTL    604800
+@       IN      SOA     wise.e11.com. root.wise.e11.com. (
+                        2022102501       ; Serial
+                        604800          ; Refresh
+                        86400           ; Retry
+                        2419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+3.27.10.in-addr.arpa.   IN      NS      wise.e11.com.
+2                       IN      PTR     wise.e11.com.
+" > /etc/bind/wise/3.27.10.in-addr.arpa
 ```
 
-![messageImage_1666688213843](https://user-images.githubusercontent.com/103357229/197730446-be8b4e07-269a-453d-b586-933e04a6bd10.jpg)
+> Mengedit file `/etc/bind/named.conf.local`
 
-#### SSS
 ```
-nano /etc/resolv.conf
-```
-tambahkan `nameserver 192.168.122.1`
-```
-apt-get update
-apt-get install dnsutils
+echo '
+zone "wise.e11.com" {
+    type master;
+    notify yes;
+    also-notify { 10.27.2.2; };
+    allow-transfer{ 10.27.2.2; };
+    file "/etc/bind/wise/wise.e11.com";
+};
+
+zone "3.27.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/wise/3.27.10.in-addr.arpa";
+};' > /etc/bind/named.conf.local
 ```
 
-> menghapus `nameserver 192.168.122.1`
+> Melakukan restart bind9
 
-#### testing
 ```
-host -t PTR 10.27.3.2
+service bind9 restart
 ```
 
-![messageImage_1666688680590](https://user-images.githubusercontent.com/103357229/197732227-4f58d62e-a032-42a5-83b8-6bad2270d9d7.jpg)
+#### TESTING
+
+![image](https://user-images.githubusercontent.com/90978855/198833625-f5a1fd3f-2186-413c-b227-0110d2bdc7c5.png)
 
 ### NOMOR 5
 > Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama (5).
 
-> telah dijalankan pada nomor 1
+#### WISE
+
+> mengedit file `named.conf.local`
+
+```
+echo '
+zone "wise.e11.com" {
+        type master;
+        notify yes;
+        also-notify {10.27.2.2;};  //Masukan IP Berlint tanpa tanda petik
+        allow-transfer {10.27.2.2;}; // Masukan IP Berlint tanpa tanda petik
+        file "/etc/bind/wise/wise.e11.com";
+};
+
+zone "3.27.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/wise/3.27.10.in-addr.arpa";
+};' > /etc/bind/named.conf.local
+```
+
+> Restart bind9
+
+```
+service bind9 restart
+```
+
+##### Berlint
+
+> merubah nameserver untuk install
+
+```
+echo '
+nameserver 192.168.122.1
+' > /etc/resolv.conf
+```
+
+> Install bind9
+
+```
+apt-get update
+apt-get install bind9 -y
+```
+
+> Mengedit file `named.conf.local`
+
+```
+echo '
+zone "wise.e11.com" {
+    type slave;
+    masters { 10.27.3.2; };
+    file "/var/lib/bind/wise.e11.com";
+};
+' > /etc/bind/named.conf.local
+```
+
+> Mengembalikan nameserver dan melakukan restart bind9
+
+```
+echo '
+nameserver 10.27.3.2
+' > /etc/resolv.conf
+
+service bind9 restart
+```
+
+#### Testing
+
+> Pada wise dilakukan stop dengan 
+
+```
+service bind9 stop
+```
+
+> Melakukan ping wise dan eden pada clients
+
+![image](https://user-images.githubusercontent.com/90978855/198833888-abbb26c4-af51-4cb7-ae57-50b87838cfe6.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198833907-bb407506-a61f-4e6b-8e94-7e1a1b31e3c9.png)
 
 ### NOMOR 6
 > Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation (6).
 
-> Subdomain
-![messageImage_1666689417603](https://user-images.githubusercontent.com/103357229/197735103-7f544844-202f-41b1-b57d-c0c0595272aa.jpg)
+#### WISE
 
-> CNAME
-![messageImage_1666689510230](https://user-images.githubusercontent.com/103357229/197735421-b4ca49fc-cffa-48d5-808e-cab43f528436.jpg)
+> Mengedit file `wise.e11.com`
+
 ```
-nameserver 10.27.3.2
-nameserver 10.27.2.2
+echo "
+\$TTL    604800
+@       IN      SOA     wise.e11.com. root.wise.e11.com. (
+                        2022102501       ; Serial
+                        604800          ; Refresh
+                        86400           ; Retry
+                        2419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@               IN      NS      wise.e11.com.
+@               IN      A       10.27.3.2 ; IP WISE
+www             IN      CNAME   wise.e11.com.
+eden            IN      A       10.27.2.3 ; IP Eden
+www.eden        IN      CNAME   eden.wise.e11.com.
+ns1             IN      A       10.27.2.2  ; IP Berlint
+operation       IN      NS      ns1
+@               IN      AAAA    ::1
+" > /etc/bind/wise/wise.e11.com
 ```
-![messageImage_1666689515387](https://user-images.githubusercontent.com/103357229/197735458-e35e7356-7203-4db8-b7a2-22975be90d0d.jpg)
 
-> BERLINT
-![messageImage_1666690457633](https://user-images.githubusercontent.com/103357229/197738870-4433d5c1-3405-45aa-9f4c-0c364a9f79b5.jpg)
-![messageImage_1666697899895](https://user-images.githubusercontent.com/103357229/197764792-9c91e2fd-2206-47c0-b36b-199a43c96c9f.jpg)
-![messageImage_1666697861899](https://user-images.githubusercontent.com/103357229/197764799-5a28f084-c3c7-4084-8fea-ae4d4de3fe71.jpg)
-![messageImage_1666697843155](https://user-images.githubusercontent.com/103357229/197764806-6e253dc1-6415-40d5-b335-9c21d23cf20e.jpg)
+> Mengedit file `named.conf.local`, lalu restart bind9
 
-> WISE
-![messageImage_1666697716806](https://user-images.githubusercontent.com/103357229/197765000-a1fb0c79-b6af-44ca-866a-1c4cc2c8550e.jpg)
-![messageImage_1666697799957](https://user-images.githubusercontent.com/103357229/197765011-6dee52ef-b4fb-4c8f-90ce-60b2ab7267f7.jpg)
-![messageImage_1666697741886](https://user-images.githubusercontent.com/103357229/197765026-6d4f496b-6714-443f-8245-9ac635311aef.jpg)
+```
+echo 'options {
+        directory "/var/cache/bind";
+        // forwarders {
+        //      0.0.0.0;
+        // };
+        //dnssec-validation auto;
+        allow-query{any;};
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+service bind9 restart
+```
 
-> Testing
-![messageImage_1666697928574](https://user-images.githubusercontent.com/103357229/197765177-22205f18-3128-4ef7-9f4d-663af180ac4c.jpg)
-![messageImage_1666697953890](https://user-images.githubusercontent.com/103357229/197765185-45fcb33b-ac82-450a-bb86-d36d7c0b575b.jpg)
+#### Berlint
 
+> Membuat dan mengedit file `named.conf.local`
 
+```
+cp /etc/bind/db.local /etc/bind/operation/operation.wise.e11.com
+echo '
+zone "wise.e11.com" {
+    type slave;
+    masters { 10.27.3.2; }; // IP WISE
+    file "/var/lib/bind/wise.e11.com";
+};
+
+zone "operation.wise.e11.com" {
+    type master;
+    file "/etc/bind/operation/operation.wise.e11.com";
+};
+' > /etc/bind/named.conf.local
+```
+
+> Mengedit file `operation.wise.e11.com`
+
+```
+echo "
+\$TTL    604800
+@       IN      SOA     operation.wise.e11.com. root.operation.wise.e11.com. (
+                        2022102501       ; Serial
+                        604800          ; Refresh
+                        86400           ; Retry
+                        2419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@               IN      NS      operation.wise.e11.com.
+@               IN      A       10.27.2.3 ; IP Eden
+www             IN      CNAME   operation.wise.e11.com.  ;
+" > /etc/bind/operation/operation.wise.e11.com
+```
+
+> Mengedit file `named.conf.option` dan restart bind9
+
+```
+echo 'options {
+        directory "/var/cache/bind";
+        // forwarders {
+        //      0.0.0.0;
+        // };
+        //dnssec-validation auto;
+        allow-query{any;};
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};' > /etc/bind/named.conf.options
+service bind9 restart
+```
+
+#### Testing
+
+![image](https://user-images.githubusercontent.com/90978855/198834276-cb0789f1-4c11-4e7a-abf1-a35febb2dde1.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198834279-c19526a1-4bc6-4533-bc05-be7ac6903e7c.png)
+ 
 ### NOMOR 7
 > Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden (7).
 
-> WISE
-![messageImage_1666699267748](https://user-images.githubusercontent.com/90848018/197792927-d5437e19-1e68-4ad0-817e-978c40cd2f41.jpg)
-![messageImage_1666699063039](https://user-images.githubusercontent.com/90848018/197792993-e5ccf5a2-5dd3-48fd-b3d7-44ea805cfafd.jpg)
+> Mengedit file `opeartion.wise.e11.com` dan restart bind9
 
-> Berlint
-![messageImage_1666699073402](https://user-images.githubusercontent.com/90848018/197793235-c8e6cb12-e662-4841-a58c-79bc8e2c698f.jpg)
-![messageImage_1666698430051](https://user-images.githubusercontent.com/90848018/197793273-9da2568c-2d43-4cd6-92f1-04acf159b1ec.jpg)
+```
+echo "
+\$TTL    604800
+@       IN      SOA     operation.wise.e11.com. root.operation.wise.e11.com. (
+                        2022102601       ; Serial
+                        604800          ; Refresh
+                        86400           ; Retry
+                        2419200         ; Expire
+                        604800 )        ; Negative Cache TTL
+;
+@               IN      NS      operation.wise.e11.com.
+@               IN      A       10.27.2.3 ; IP Eden
+www             IN      CNAME   operation.wise.e11.com.  ; IP Berlint
+strix           IN      A       10.27.2.3   ; IP Eden
+www.strix       IN      CNAME   strix.operation.wise.e11.com.
+" > /etc/bind/operation/operation.wise.e11.com
 
-> SSS
-![messageImage_1666699085266](https://user-images.githubusercontent.com/90848018/197793381-08aa01e5-54f7-405b-9c1c-035361f57eac.jpg)
+service bind9 restart
+```
 
+#### Testing
+
+![image](https://user-images.githubusercontent.com/90978855/198834536-50c54b75-6128-4f59-a78d-ea4d4f1ec25a.png)
+
+![image](https://user-images.githubusercontent.com/90978855/198834542-0fcdc12c-f938-488a-93bf-c38590fae8a7.png)
 
 ### NOMOR 8
 > Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
