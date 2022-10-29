@@ -529,11 +529,17 @@ service bind9 restart
 ### NOMOR 11
 > Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja (11).
 
+![image](https://user-images.githubusercontent.com/90848018/198838630-f34e8e50-a116-443d-a7de-ac981a9e714f.png)
+
 ### NOMOR 12
 > Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache (12).
 
+![image](https://user-images.githubusercontent.com/90848018/198838663-51af35d5-ef02-406d-94e3-8646e0de232a.png)
+
 ### NOMOR 13
 > Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js (13).
+
+![image](https://user-images.githubusercontent.com/90848018/198838691-7ce800df-035c-445b-9f05-99153df66bd6.png)
 
 ### NOMOR 14
 > Loid meminta agar www.strix.operation.wise.yyy.com hanya bisa diakses dengan port 15000 dan port 15500 (14)
