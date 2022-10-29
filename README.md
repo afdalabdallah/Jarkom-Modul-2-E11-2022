@@ -544,11 +544,30 @@ service bind9 restart
 ### NOMOR 14
 > Loid meminta agar www.strix.operation.wise.yyy.com hanya bisa diakses dengan port 15000 dan port 15500 (14)
 
+![image](https://user-images.githubusercontent.com/90848018/198838804-24e59e5c-3a9b-4c75-b6e0-a09be96d69cc.png)
+
 ### NOMOR 15
 > dengan autentikasi username Twilight dan password opStrix dan file di /var/www/strix.operation.wise.yyy (15)
+
+
+![image](https://user-images.githubusercontent.com/90848018/198839096-7596190a-c050-4794-b1c6-d47cbf0d7d22.png)
+
+
+![image](https://user-images.githubusercontent.com/90848018/198839086-c5bdbf2a-f510-4d59-8992-6d1b2b99befd.png)
+
 
 ### NOMOR 16
 > dan setiap kali mengakses IP Eden akan dialihkan secara otomatis ke www.wise.yyy.com (16).
 
+![image](https://user-images.githubusercontent.com/90848018/198838976-2e8f197d-d4fb-4b10-a6e6-7ad62f59b7eb.png)
+
+
+![image](https://user-images.githubusercontent.com/90848018/198838969-f5014d3a-c8d9-4bc2-abaf-091e76c792de.png)
+
+
 ### NOMOR 17
 > Karena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifikasi sehingga banyak gambar-gambar yang random, maka Loid ingin mengubah request gambar yang memiliki substring “eden” akan diarahkan menuju eden.png. Bantulah Agent Twilight dan Organisasi WISE menjaga perdamaian! (17)
+
+![image](https://user-images.githubusercontent.com/90848018/198839034-60103a1d-14e2-4c8d-89ad-33bcc115ef09.png)
+
+![image](https://user-images.githubusercontent.com/90848018/198839020-48ef0fa3-3b3c-429e-bc94-e1cb27861ab3.png)
