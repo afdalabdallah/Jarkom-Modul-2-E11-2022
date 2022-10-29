@@ -506,11 +506,25 @@ service bind9 restart
 ### NOMOR 8
 > Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
 
+![image](https://user-images.githubusercontent.com/90848018/198838425-48072ac7-f7a4-4d86-8963-afd23bc2d6b6.png)
+
+![image](https://user-images.githubusercontent.com/90848018/198838341-10384f17-ccf5-4c77-9428-d38cf736d7c8.png)
+
+![image](https://user-images.githubusercontent.com/90848018/198838325-410dc440-f59d-45bd-b533-c6b609e9e224.png)
+
 ### NOMOR 9
 > Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home (9).
 
+![image](https://user-images.githubusercontent.com/90848018/198838425-48072ac7-f7a4-4d86-8963-afd23bc2d6b6.png)
+
+![image](https://user-images.githubusercontent.com/90848018/198838393-d9b16819-e5de-4687-a96c-1e5a4b1e9894.png)
+
 ### NOMOR 10
 > Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com (10).
+
+![image](https://user-images.githubusercontent.com/90848018/198838542-daf72425-e1f9-4d39-858c-6025213cc73e.png)
+
+![image](https://user-images.githubusercontent.com/90848018/198838518-ad9fc63c-ab13-4d32-87ac-b03c3a86c9c3.png)
 
 ### NOMOR 11
 > Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja (11).
